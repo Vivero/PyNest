@@ -87,3 +87,4 @@ ENV/
 .ropeproject
 
 data/nest_api.sh
+data/auth.yml
