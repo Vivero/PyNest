@@ -1,0 +1,14 @@
+[Unit]
+Description=Nest Logger
+After=syslog.target network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/PyNest/
+ExecStart=/opt/PyNest/main.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=PyNest
+
+[Install]
+WantedBy=multi-user.target
