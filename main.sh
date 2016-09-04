@@ -9,5 +9,5 @@ export PYNEST_DB_USER='pynest'
 export PYNEST_DB_PASS='flats44'
 export PYNEST_DB_HOST='localhost'
 
-exec /usr/bin/python /opt/pynest/pynest.py
+exec /usr/bin/python /opt/PyNest/pynest.py
 

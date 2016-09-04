@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import argparse, os, psycopg2, signal, sys, yaml
+import argparse, json, os, psycopg2, signal, sys, yaml
 
 import lib.nest as nest
 
@@ -42,13 +42,38 @@ class PyNest:
 
             # get Nest API data
             nest_data = self.nest.get_data()
+            #print json.dumps(nest_data, indent=4, sort_keys=True)
+
 
             # store in database
             if (nest_data is not None) and (self.db_conn is not None):
-                pass
+                creation_date = datetime.now()
+
+                thermostats = nest_data["devices"]["thermostats"].keys()
+                thermostat_data = nest_data["devices"]["thermostats"][thermostats[0]]
+
+                cursor = self.db_conn.cursor()
+                cursor.execute("INSERT INTO thermostats (device_id, name, has_leaf, target_temperature_f, target_temperature_high_f, target_temperature_low_f, away_temperature_high_f, away_temperature_low_f, hvac_mode, ambient_temperature_f, humidity, hvac_state, raw_data, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now(), now())", (
+                            thermostat_data['device_id'],
+                            thermostat_data['name'],
+                            thermostat_data['has_leaf'],
+                            thermostat_data['target_temperature_f'],
+                            thermostat_data['target_temperature_high_f'],
+                            thermostat_data['target_temperature_low_f'],
+                            thermostat_data['away_temperature_high_f'],
+                            thermostat_data['away_temperature_low_f'],
+                            thermostat_data['hvac_mode'],
+                            thermostat_data['ambient_temperature_f'],
+                            thermostat_data['humidity'],
+                            thermostat_data['hvac_state'],
+                            json.dumps(nest_data),
+                        )
+                    )
+                self.db_conn.commit()
+                cursor.close()
 
             # wait till next polling period
-            sleep(5.0)
+            sleep(600.0)
 
         print("Terminating...")
 
