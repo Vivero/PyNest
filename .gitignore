@@ -86,5 +86,6 @@ ENV/
 # Rope project settings
 .ropeproject
 
+data/db_info.sh
 data/nest_api.sh
 data/auth.yml
