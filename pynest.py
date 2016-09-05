@@ -77,7 +77,7 @@ class PyNest:
                 cursor.close()
 
             # wait till next polling period
-            sleep(6.0)
+            sleep(600.0)
 
         print("Terminating...")
 

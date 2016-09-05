@@ -19,7 +19,7 @@ else
     printf "  export PYNEST_DB_PASS=<PostgreSQL user password>\n"
     printf "  export PYNEST_DB_HOST=<PostgreSQL hostname>\n"
     printf "\nReplace <...> with appropriate credentials to access your PostgreSQL database.\n\n"
-    printf "Running PyWeather with database disabled ...\n"
+    printf "Running PyNest with database disabled ...\n"
     
     exec /usr/bin/python /opt/PyNest/pynest.py --no-db
 fi
