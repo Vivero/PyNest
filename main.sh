@@ -4,10 +4,26 @@ export PYTHONUNBUFFERED=1
 
 export PYNEST_AUTH_FILE='data/auth.yml'
 
-export PYNEST_DB_NAME='pynest'
-export PYNEST_DB_USER='pynest'
-export PYNEST_DB_PASS='flats44'
-export PYNEST_DB_HOST='localhost'
+PYNEST_DB_INFO_FILE="data/db_info.sh"
 
-exec /usr/bin/python /opt/PyNest/pynest.py
+if [[ -e "$PYNEST_DB_INFO_FILE" ]]; then
+    source $PYNEST_DB_INFO_FILE
+
+    exec /usr/bin/python /opt/PyNest/pynest.py
+
+else
+    printf "Missing '$PYNEST_DB_INFO_FILE'\n"
+    printf "Create the file with the following contents:\n\n"
+    printf "  export PYNEST_DB_NAME=<PostgreSQL database name>\n"
+    printf "  export PYNEST_DB_USER=<PostgreSQL user name>\n"
+    printf "  export PYNEST_DB_PASS=<PostgreSQL user password>\n"
+    printf "  export PYNEST_DB_HOST=<PostgreSQL hostname>\n"
+    printf "\nReplace <...> with appropriate credentials to access your PostgreSQL database.\n\n"
+    printf "Running PyWeather with database disabled ...\n"
+    
+    exec /usr/bin/python /opt/PyNest/pynest.py --no-db
+fi
+
+
+
 

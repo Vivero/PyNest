@@ -29,7 +29,11 @@ class PyNest:
         self.db_conn = None
         if db_info is not None:
             try:
-                self.db_conn = psycopg2.connect(database=db_info['dbname'], user=db_info['dbuser'], password=db_info['dbpass'], host=db_info['dbhost'])
+                self.db_conn = psycopg2.connect(
+                    database=db_info['dbname'], 
+                    user=db_info['dbuser'], 
+                    password=db_info['dbpass'], 
+                    host=db_info['dbhost'])
             except psycopg2.Error as e:
                 print("Unable to connect to database!\n{:s}".format(str(e)))
                 self.db_conn = None
@@ -53,7 +57,7 @@ class PyNest:
                 thermostat_data = nest_data["devices"]["thermostats"][thermostats[0]]
 
                 cursor = self.db_conn.cursor()
-                cursor.execute("INSERT INTO thermostats (device_id, name, has_leaf, target_temperature_f, target_temperature_high_f, target_temperature_low_f, away_temperature_high_f, away_temperature_low_f, hvac_mode, ambient_temperature_f, humidity, hvac_state, raw_data, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now(), now())", (
+                cursor.execute("INSERT INTO thermostat_readings (device_id, name, has_leaf, target_temperature_f, target_temperature_high_f, target_temperature_low_f, away_temperature_high_f, away_temperature_low_f, hvac_mode, ambient_temperature_f, humidity, hvac_state, raw_data, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now(), now())", (
                             thermostat_data['device_id'],
                             thermostat_data['name'],
                             thermostat_data['has_leaf'],
@@ -73,7 +77,7 @@ class PyNest:
                 cursor.close()
 
             # wait till next polling period
-            sleep(600.0)
+            sleep(6.0)
 
         print("Terminating...")
 

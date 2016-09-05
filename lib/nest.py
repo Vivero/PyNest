@@ -9,14 +9,15 @@ class Nest:
     def get_data(self):
         access_token = self.auth_data['access_token']
 
-        # http GET on Nest API
-        nest_response = requests.get(self.nest_api_url.format(access_token))
-
-        # check the response
         try:
+            # http GET on Nest API
+            nest_response = requests.get(self.nest_api_url.format(access_token))
+
+            # check the response
             nest_response.raise_for_status()
+            
         except Exception as e:
-            print("nest.get_data exception: '{:s}'".format(str(e)))
+            print("Nest.get_data exception: '{:s}'".format(str(e)))
             return None
 
         # return JSON-formatted data
